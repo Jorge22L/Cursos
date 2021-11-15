@@ -19,10 +19,10 @@ namespace Persistencia
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<tblCursoInstructor>().HasKey(ci => new { ci.InstructorId, ci.CursoId });
+            modelBuilder.Entity<tblCurso>().HasKey(ci => new { ci.CursoId});
             modelBuilder.Entity<tblComentario>().HasKey(ci => new { ci.ComentarioId });
-            modelBuilder.Entity<tblCurso>().HasKey(ci => new { ci.CursoId });
-            modelBuilder.Entity<tblInstructor>().HasKey(ci => new { ci.InstructorId });
-            modelBuilder.Entity<tblPrecio>().HasKey(ci => new { ci.PrecioId });
+            modelBuilder.Entity<tblInstructor>().HasKey(ci => new { ci.InstructorId});
+            modelBuilder.Entity<tblPrecio>().HasKey(ci => new { ci.PrecioId});
         }
 
         public DbSet<tblComentario> tblComentario { get; set; }

@@ -13,9 +13,10 @@ namespace Dominio
         public string Descripcion { get; set; }
         public DateTime? FechaPublicacion { get; set; }
         public byte[] FotoPortada { get; set; }
+
         public tblPrecio PrecioPromocion { get; set; }
 
         public ICollection<tblComentario> ComentarioLista { get; set; }
-        public ICollection<tblCursoInstructor> InstructoresLista { get; set; }
+        public ICollection<tblCursoInstructor> InstructoresLink { get; set; }
     }
 }

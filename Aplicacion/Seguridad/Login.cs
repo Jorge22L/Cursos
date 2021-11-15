@@ -4,6 +4,7 @@ using Dominio;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Persistencia;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,15 +40,15 @@ namespace Aplicacion.Seguridad
 
             public Manejador(UserManager<tblUsuario> userManager, SignInManager<tblUsuario> signInManager, IJwtGenerador jwtGenerador)
             {
-                _signInManager = signInManager;
                 _userManager = userManager;
+                _signInManager = signInManager;
                 _jwtGenerador = jwtGenerador;
             }
 
             public async Task<UsuarioData> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
                 var usuario = await _userManager.FindByEmailAsync(request.Email);
-                if (usuario == null)
+                if(usuario == null)
                 {
                     throw new ManejadorExcepcion(HttpStatusCode.Unauthorized);
                 }
@@ -55,17 +56,20 @@ namespace Aplicacion.Seguridad
                 var resultado = await _signInManager.CheckPasswordSignInAsync(usuario, request.Password, false);
                 if (resultado.Succeeded)
                 {
-                    return new UsuarioData 
+                    return new UsuarioData
                     {
+                        ID = usuario.Id,
                         NombreCompleto = usuario.NombreCompleto,
-                        Email = usuario.Email,
                         Token = _jwtGenerador.CrearToken(usuario),
-                        Username = usuario.UserName,
+                        UserName = usuario.UserName,
+                        Email = usuario.Email,
                         Imagen = null
                     };
                 }
 
                 throw new ManejadorExcepcion(HttpStatusCode.Unauthorized);
+
+
             }
         }
     }

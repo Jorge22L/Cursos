@@ -1,5 +1,5 @@
 using Aplicacion.Contratos;
-using Aplicacion.Curso;
+using Aplicacion.Cursos;
 using Dominio;
 using FluentValidation.AspNetCore;
 using MediatR;
@@ -19,6 +19,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Persistencia;
 using Seguridad.TokenSeguridad;
 using System;
@@ -42,8 +43,7 @@ namespace WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<CursosContext>(opt =>
-            {
+            services.AddDbContext<CursosContext>(opt => {
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
             services.AddMediatR(typeof(Consulta));
@@ -57,9 +57,12 @@ namespace WebAPI
             identityBuilder.AddEntityFrameworkStores<CursosContext>();
             identityBuilder.AddSignInManager<SignInManager<tblUsuario>>();
             services.TryAddSingleton<ISystemClock, SystemClock>();
-            services.AddControllers();
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Las pistas de blue"));
+            services.AddScoped<IJwtGenerador, JwtGenerador>();
+            services.AddScoped<IUsuarioSesion, UsuarioSesion>();
+            services.AddHttpContextAccessor();
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Mi Palabra secreta"));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
             {
                 opt.TokenValidationParameters = new TokenValidationParameters
@@ -70,26 +73,28 @@ namespace WebAPI
                     ValidateIssuer = false
                 };
             });
+            
 
-            services.AddScoped<IJwtGenerador, JwtGenerador>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            
             app.UseMiddleware<ManejadorErrorMiddleware>();
+            
             if (env.IsDevelopment())
             {
                 //app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseAuthentication();
-
+            
             app.UseRouting();
 
             app.UseAuthorization();
-
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
