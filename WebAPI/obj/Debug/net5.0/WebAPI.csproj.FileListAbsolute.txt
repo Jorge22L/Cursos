@@ -67,9 +67,8 @@ C:\Users\JorgeL\source\repos\Cursos\WebAPI\obj\Debug\net5.0\WebAPI.AssemblyInfo.
 C:\Users\JorgeL\source\repos\Cursos\WebAPI\obj\Debug\net5.0\WebAPI.csproj.CoreCompileInputs.cache
 C:\Users\JorgeL\source\repos\Cursos\WebAPI\obj\Debug\net5.0\WebAPI.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\JorgeL\source\repos\Cursos\WebAPI\obj\Debug\net5.0\WebAPI.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\JorgeL\source\repos\Cursos\WebAPI\obj\Debug\net5.0\staticwebassets\WebAPI.StaticWebAssets.Manifest.cache
-C:\Users\JorgeL\source\repos\Cursos\WebAPI\obj\Debug\net5.0\staticwebassets\WebAPI.StaticWebAssets.xml
 C:\Users\JorgeL\source\repos\Cursos\WebAPI\obj\Debug\net5.0\scopedcss\bundle\WebAPI.styles.css
+C:\Users\JorgeL\source\repos\Cursos\WebAPI\obj\Debug\net5.0\staticwebassets\WebAPI.StaticWebAssets.Manifest.cache
 C:\Users\JorgeL\source\repos\Cursos\WebAPI\obj\Debug\net5.0\WebAPI.RazorTargetAssemblyInfo.cache
 C:\Users\JorgeL\source\repos\Cursos\WebAPI\obj\Debug\net5.0\WebAPI.csproj.CopyComplete
 C:\Users\JorgeL\source\repos\Cursos\WebAPI\obj\Debug\net5.0\WebAPI.dll

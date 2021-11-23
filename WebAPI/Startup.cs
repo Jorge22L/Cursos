@@ -1,5 +1,5 @@
 using Aplicacion.Contratos;
-using Aplicacion.Cursos;
+using Aplicacion.Curso;
 using Dominio;
 using FluentValidation.AspNetCore;
 using MediatR;
@@ -19,7 +19,6 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using Persistencia;
 using Seguridad.TokenSeguridad;
 using System;
@@ -43,6 +42,10 @@ namespace WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(opt => opt.AddPolicy("corsApp", builder =>
+            {
+                builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+            }));
             services.AddDbContext<CursosContext>(opt => {
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
@@ -80,7 +83,7 @@ namespace WebAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            
+            app.UseCors("corsApp");
             app.UseMiddleware<ManejadorErrorMiddleware>();
             
             if (env.IsDevelopment())

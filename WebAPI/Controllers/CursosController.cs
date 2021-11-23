@@ -1,4 +1,4 @@
-﻿using Aplicacion.Cursos;
+﻿using Aplicacion.Curso;
 using Dominio;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
