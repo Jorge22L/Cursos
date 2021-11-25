@@ -1,4 +1,5 @@
-﻿using Dominio;
+﻿using AutoMapper;
+using Dominio;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistencia;
@@ -13,21 +14,28 @@ namespace Aplicacion.Curso
 {
     public class Consulta
     {
-        public class ListaCursos : IRequest<List<tblCurso>> { }
+        public class ListaCursos : IRequest<List<CursoDto>> { }
 
-        public class Manejador : IRequestHandler<ListaCursos, List<tblCurso>>
+        public class Manejador : IRequestHandler<ListaCursos, List<CursoDto>>
         {
             
             private readonly CursosContext _context;
-            public Manejador(CursosContext context)
+            private readonly IMapper _mapper;
+            public Manejador(CursosContext context, IMapper mapper)
             {
                 _context = context;
+                _mapper = mapper;
             }
            
-            public async Task<List<tblCurso>> Handle(ListaCursos request, CancellationToken cancellationToken)
+            public async Task<List<CursoDto>> Handle(ListaCursos request, CancellationToken cancellationToken)
             {
-                var cursos = await _context.tblCurso.ToListAsync();
-                return cursos;
+                var cursos = await _context.tblCurso.Include(x => x.InstructoresLink)
+                    .ThenInclude(x => x.Instructor)
+                    .ToListAsync();
+
+                var cursosDto = _mapper.Map<List<tblCurso>, List<CursoDto>>(cursos);
+
+                return cursosDto;
             }
         }
     }
